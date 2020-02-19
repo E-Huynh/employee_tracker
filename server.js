@@ -45,7 +45,7 @@ function init() {
             // based on their answer, either call the bid or the post functions
             switch (response.action) {
                 case 'View All Employees':
-                    queryAllEmployees();
+                    allEmployees();
                     break;
                 case 'View All Employees By Department':
                     console.log('View All Employees By Department chosen');
@@ -71,11 +71,12 @@ function init() {
         });
 }
 
-function queryAllEmployees(){
+function allEmployees(){
     connection.query(
-        "SELECT id, first_name, last_name FROM employee",
+        "SELECT employee.id, employee.first_name, employee.last_name, positions.title, department.role, positions.salary FROM employee INNER JOIN positions ON employee.position_id = positions.id INNER JOIN department ON positions.department_id = department.id;",
         function (err, result){
             if (err) throw err;
             console.table(result);
+            init();
     });
 }
