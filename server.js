@@ -48,7 +48,7 @@ function init() {
                     allEmployees();
                     break;
                 case 'View All Employees By Department':
-                    console.log('View All Employees By Department chosen');
+                    allEmployeesDepartment();
                     break;
                 case 'View All Employees By Manager':
                     console.log('View All Employees By Manager chosen');
@@ -71,13 +71,37 @@ function init() {
         });
 }
 
-function allEmployees(){
+function allEmployees() {
     connection.query(
         //need to return manager as a column
         "SELECT employee.id, employee.first_name, employee.last_name, positions.title, department.role, positions.salary, employee.manager_id FROM employee INNER JOIN positions ON employee.position_id = positions.id INNER JOIN department ON positions.department_id = department.id;",
-        function (err, result){
+        function (err, result) {
             if (err) throw err;
             console.table(result);
             init();
-    });
+        });
+}
+
+function allEmployeesDepartment() {
+    inquirer.prompt([{
+        type: 'list',
+        name: 'department',
+        message: "View all employees by which department?",
+        choices:
+            [
+                'Management',
+                'Player'
+            ]
+    }])
+        .then(function (response) {
+            connection.query(
+                "SELECT employee.id, employee.first_name, employee.last_name, positions.title, department.role, positions.salary, employee.manager_id FROM employee INNER JOIN positions ON employee.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE department.role = ?;",
+                [response.department],
+                function (err, result) {
+                    if (err) throw err;
+                    console.table(result);
+                    init();
+                });
+        }
+        );
 }
