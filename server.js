@@ -73,9 +73,9 @@ function init() {
 
 function queryAllEmployees(){
     connection.query(
-        "SELECT id, firstname, lastname, roleId, managerId FROM employee_db.employee;",
+        "SELECT employee.firstname, employee.lastname, jobrole.title, jobrole.salary, department.departmentName FROM employee INNER JOIN jobrole ON employee.roleId = jobrole.id INNER JOIN department ON jobrole.department_id = department.id;",
         function (err, result){
             if (err) throw err;
             console.table(result);
-    })
+    });
 }
