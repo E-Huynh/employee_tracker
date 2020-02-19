@@ -73,7 +73,7 @@ function init() {
 
 function queryAllEmployees(){
     connection.query(
-        "SELECT employee.firstname, employee.lastname, jobrole.title, jobrole.salary, department.departmentName FROM employee INNER JOIN jobrole ON employee.roleId = jobrole.id INNER JOIN department ON jobrole.department_id = department.id;",
+        "SELECT id, first_name, last_name FROM employee",
         function (err, result){
             if (err) throw err;
             console.table(result);
