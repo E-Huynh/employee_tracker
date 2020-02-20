@@ -33,7 +33,7 @@ function init() {
         choices:
             [
                 'View',
-                'Add Employee',
+                'Add',
                 'Add Department',
                 'Add Position',
                 'Update Employee Position'
@@ -43,17 +43,9 @@ function init() {
             // based on their answer, either call the bid or the post functions
             switch (response.action) {
                 case 'View':
-                    console.log("foo");
                     return viewChoice();
-                case 'Add Employee':
-                    addEmployee();
-                    break;
-                case 'Add Department':
-                    addDepartment();
-                    break;
-                case 'Add Position':
-                    addPosition();
-                    break;
+                case 'Add':
+                    return addChoice();
                 case 'Update Employee Position':
                     updateEmployeePosition();
                     break;
@@ -250,6 +242,34 @@ function viewChoice(){
                 break;
             case 'All Employees By Manager':
                 allEmployeesManager();
+                break;
+            default:
+                console.log("Error: No option selected");
+        }
+    });
+}
+function addChoice(){
+    inquirer.prompt([{
+        type: 'list',
+        name: 'addType',
+        message: 'What would you like to add?',
+        choices: 
+            [
+                'Employee',
+                'Department',
+                'Position'
+            ]
+    }])
+    .then(function (response) {
+        switch(response.addType){
+            case 'Employee':
+                addEmployee();
+                break;
+            case 'Department':
+                addDepartment()
+                break;
+            case 'Position':
+                addPosition();
                 break;
             default:
                 console.log("Error: No option selected");
