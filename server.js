@@ -291,7 +291,7 @@ function updateChoice(){
                 updateEmployeePosition();
                 break;
             case 'Employee Manager':
-                console.lof('Fx does not exist');
+                console.log('Fx does not exist');
                 break;
             default:
                 console.log("Error: No option selected");
