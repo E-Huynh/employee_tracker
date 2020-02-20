@@ -84,15 +84,15 @@ function allEmployeesDepartment(array) {
 function allEmployeesManager(array) {
     console.log("array: ", array);
     inquirer.prompt([{
-        type: 'input',
+        type: 'list',
         name: 'manager',
-        message: "View all employees by which manager's ID?",
+        message: "View all employees by which manager?",
+        choices: array
     }])
         .then(function (response) {
             connection.query(
-                //HARDCODE TO ALWAYS SHOW MANAGER_ID = 1
-                "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id = 1 ORDER BY id;",
-                // [response.manager],
+                "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id = ? ORDER BY id;",
+                [response.manager],
                 function (err, result) {
                     if (err) throw err;
                     console.table(result);
