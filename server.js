@@ -51,7 +51,7 @@ function init() {
                     allEmployeesDepartment();
                     break;
                 case 'View All Employees By Manager':
-                    console.log('View All Employees By Manager chosen');
+                    allEmployeesManager()
                     break;
                 case 'Add Employee':
                     console.log('Add Employee chosen');
@@ -105,3 +105,23 @@ function allEmployeesDepartment() {
         }
         );
 }
+function allEmployeesManager() {
+    inquirer.prompt([{
+        type: 'input',
+        name: 'manager',
+        message: "View all employees by which manager's ID?",
+    }])
+        .then(function (response) {
+            console.log(response);
+            connection.query(
+                "SELECT employee.id, employee.first_name, employee.last_name, positions.title, department.role, positions.salary, employee.manager_id FROM employee INNER JOIN positions ON employee.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE employee.manager_id = ?;",
+                [response.manager],
+                function (err, result) {
+                    if (err) throw err;
+                    console.table(result);
+                    init();
+                });
+        }
+        );
+}
+
