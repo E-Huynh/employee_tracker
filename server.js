@@ -38,7 +38,7 @@ function init() {
                 'Add Employee',
                 'Add Department',
                 'Add Position',
-                'Update Employee Manager'
+                'Update Employee Position'
             ]
     }])
         .then(function (response) {
@@ -62,8 +62,8 @@ function init() {
                 case 'Add Position':
                     addPosition();
                     break;
-                case 'Update Employee Manager':
-                    console.log('Update Employee Manager chosen');
+                case 'Update Employee Position':
+                    updateEmployeePosition();
                     break;
                 default:
                     console.log("Error: No option selected");
@@ -205,6 +205,30 @@ function addPosition() {
         connection.query(
             "INSERT INTO positions SET ?;",
             [response],
+            function (err, result) {
+                if (err) throw err;
+                init();
+            });
+    }
+    );
+}
+function updateEmployeePosition() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'id',
+            message: "What is the ID of the employee to update?"
+        },
+        {
+            type: 'input',
+            name: 'position_id',
+            message: "What is the employee's new position?",
+        }
+    ])
+    .then(function (response) {
+        connection.query(
+            "UPDATE employee SET position_id = ? WHERE id = ?;",
+            [response.position_id, response.id],
             function (err, result) {
                 if (err) throw err;
                 init();
