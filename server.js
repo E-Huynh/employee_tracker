@@ -80,6 +80,7 @@ function allEmployeesDepartment(array) {
         }
         );
 }
+//ATTEMPT TO DISPLAY MANAGER NAME INSTEAD OF ID
 function allEmployeesManager(array) {
     console.log("array: ", array);
     inquirer.prompt([{
