@@ -80,7 +80,7 @@ function allEmployeesDepartment(array) {
         }
         );
 }
-//ATTEMPT TO DISPLAY MANAGER NAME INSTEAD OF ID
+//DECIDE IF WE WANT TO SHOW SOMETHING WHEN 'NULL' IS CHOSEN.
 function allEmployeesManager(array) {
     console.log("array: ", array);
     inquirer.prompt([{
