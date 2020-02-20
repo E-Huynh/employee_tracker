@@ -90,9 +90,10 @@ function allEmployeesManager(array) {
         choices: array
     }])
         .then(function (response) {
+            let index = array.indexOf(response.manager);
             connection.query(
                 "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id = ? ORDER BY id;",
-                [response.manager],
+                [index],
                 function (err, result) {
                     if (err) throw err;
                     console.table(result);
@@ -311,14 +312,15 @@ function distinctDepartment(){
 function distinctManager(){
     let managerArray = ['null'];
     connection.query(
-        "SELECT DISTINCT manager_id FROM employee;",
+        "SELECT distinct e.manager_id, CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id;",
         function(err, result){
+            console.log("result: ", result);
             if(err) throw err;
             // result.forEach(element => managerArray.push(element.manager_id));
             for (let i = 1; i < result.length; i++){
-                managerArray.push(result[i].manager_id);
+                managerArray.push(result[i].Manager);
             }
-            console.log("in fx: ",managerArray);
+            console.log("in fx: ", managerArray);
             allEmployeesManager(managerArray)
         }
     )
