@@ -54,7 +54,7 @@ function init() {
 function allEmployees() {
     connection.query(
         //need to return manager as a column
-        "SELECT e.id, e.first_name 'First Name', e.last_name 'Last name', department.role 'Role', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id ORDER BY id;",
+        "SELECT e.id, e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id ORDER BY id;",
         function (err, result) {
             if (err) throw err;
             console.table(result);
@@ -70,7 +70,7 @@ function allEmployeesDepartment(array) {
     }])
         .then(function (response) {
             connection.query(
-                "SELECT e.id, e.first_name 'First Name', e.last_name 'Last name', department.role 'Role', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE department.role = ? ORDER BY id;",
+                "SELECT e.id, e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE department.role = ? ORDER BY id;",
                 [response.department],
                 function (err, result) {
                     if (err) throw err;
