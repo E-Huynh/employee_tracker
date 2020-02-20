@@ -32,9 +32,7 @@ function init() {
         message: "What would you like to do?",
         choices:
             [
-                'View All Employees',
-                'View All Employees By Department',
-                'View All Employees By Manager',
+                'View',
                 'Add Employee',
                 'Add Department',
                 'Add Position',
@@ -44,15 +42,9 @@ function init() {
         .then(function (response) {
             // based on their answer, either call the bid or the post functions
             switch (response.action) {
-                case 'View All Employees':
-                    allEmployees();
-                    break;
-                case 'View All Employees By Department':
-                    allEmployeesDepartment();
-                    break;
-                case 'View All Employees By Manager':
-                    allEmployeesManager()
-                    break;
+                case 'View':
+                    console.log("foo");
+                    return viewChoice();
                 case 'Add Employee':
                     addEmployee();
                     break;
@@ -235,4 +227,32 @@ function updateEmployeePosition() {
             });
     }
     );
+}
+function viewChoice(){
+    inquirer.prompt([{
+        type: 'list',
+        name: 'viewType',
+        message: 'What would you like to view?',
+        choices: 
+            [
+                'All Employees',
+                'All Employees By Department',
+                'All Employees By Manager'
+            ]
+    }])
+    .then(function (response) {
+        switch(response.viewType){
+            case 'All Employees':
+                allEmployees();
+                break;
+            case 'All Employees By Department':
+                allEmployeesDepartment();
+                break;
+            case 'All Employees By Manager':
+                allEmployeesManager();
+                break;
+            default:
+                console.log("Error: No option selected");
+        }
+    });
 }
