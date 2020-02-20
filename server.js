@@ -54,7 +54,7 @@ function init() {
 function allEmployees() {
     connection.query(
         //need to return manager as a column
-        "SELECT e.id, e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id ORDER BY id;",
+        "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id ORDER BY id;",
         function (err, result) {
             if (err) throw err;
             console.table(result);
@@ -70,7 +70,7 @@ function allEmployeesDepartment(array) {
     }])
         .then(function (response) {
             connection.query(
-                "SELECT e.id, e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE department.role = ? ORDER BY id;",
+                "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE department.role = ? ORDER BY id;",
                 [response.department],
                 function (err, result) {
                     if (err) throw err;
@@ -81,7 +81,8 @@ function allEmployeesDepartment(array) {
         );
 }
 //REFORMAT TABLE
-function allEmployeesManager() {
+function allEmployeesManager(array) {
+    console.log("array: ", array);
     inquirer.prompt([{
         type: 'input',
         name: 'manager',
@@ -89,8 +90,9 @@ function allEmployeesManager() {
     }])
         .then(function (response) {
             connection.query(
-                "SELECT employee.id, employee.first_name, employee.last_name, positions.title, department.role, positions.salary, employee.manager_id FROM employee INNER JOIN positions ON employee.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE employee.manager_id = ?;",
-                [response.manager],
+                //HARDCODE TO ALWAYS SHOW MANAGER_ID = 1
+                "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id = 1 ORDER BY id;",
+                // [response.manager],
                 function (err, result) {
                     if (err) throw err;
                     console.table(result);
@@ -237,7 +239,8 @@ function viewChoice(){
                 distinctDepartment()
                 break;
             case 'All Employees By Manager':
-                allEmployeesManager();
+                // allEmployeesManager();
+                distinctManager();
                 break;
             default:
                 console.log("Error: No option selected");
@@ -304,6 +307,19 @@ function distinctDepartment(){
             if(err) throw err;
             result.forEach(element => deptArray.push(element.role));
             allEmployeesDepartment(deptArray)
+        }
+    )
+}
+function distinctManager(){
+    let deptArray = [];
+    connection.query(
+        "SELECT DISTINCT manager_id FROM employee;",
+        function(err, result){
+            if(err) throw err;
+            console.log("result: ", result);
+            result.forEach(element => deptArray.push(element.manager_id));
+            console.log("in fx: ",deptArray);
+            allEmployeesManager(deptArray)
         }
     )
 }
