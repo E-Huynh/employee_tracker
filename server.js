@@ -85,7 +85,7 @@ function allEmployeesManager(array) {
     inquirer.prompt([{
         type: 'list',
         name: 'manager',
-        message: "View all employees by which manager?",
+        message: "View all employees by which manager's ID?",
         choices: array
     }])
         .then(function (response) {
