@@ -34,21 +34,17 @@ function init() {
             [
                 'View',
                 'Add',
-                'Add Department',
-                'Add Position',
-                'Update Employee Position'
+                'Update'
             ]
     }])
         .then(function (response) {
-            // based on their answer, either call the bid or the post functions
             switch (response.action) {
                 case 'View':
                     return viewChoice();
                 case 'Add':
                     return addChoice();
-                case 'Update Employee Position':
-                    updateEmployeePosition();
-                    break;
+                case 'Update':
+                    return updateChoice();
                 default:
                     console.log("Error: No option selected");
             }
@@ -88,6 +84,7 @@ function allEmployeesDepartment() {
         }
         );
 }
+//REFORMAT TABLE
 function allEmployeesManager() {
     inquirer.prompt([{
         type: 'input',
@@ -95,7 +92,6 @@ function allEmployeesManager() {
         message: "View all employees by which manager's ID?",
     }])
         .then(function (response) {
-            console.log(response);
             connection.query(
                 "SELECT employee.id, employee.first_name, employee.last_name, positions.title, department.role, positions.salary, employee.manager_id FROM employee INNER JOIN positions ON employee.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE employee.manager_id = ?;",
                 [response.manager],
@@ -270,6 +266,30 @@ function addChoice(){
                 break;
             case 'Position':
                 addPosition();
+                break;
+            default:
+                console.log("Error: No option selected");
+        }
+    });
+}
+function updateChoice(){
+    inquirer.prompt([{
+        type: 'list',
+        name: 'updateType',
+        message: 'What would you like to update?',
+        choices: 
+            [
+                'Employee Position',
+                'Employee Manager'
+            ]
+    }])
+    .then(function (response) {
+        switch(response.updateType){
+            case 'Employee Position':
+                updateEmployeePosition();
+                break;
+            case 'Employee Manager':
+                console.lof('Fx does not exist');
                 break;
             default:
                 console.log("Error: No option selected");

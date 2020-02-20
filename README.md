@@ -34,7 +34,7 @@ Build a command-line application that at a minimum allows the user to:
 
   <!-- * View departments, roles, employees -->
 
-  * Update employee roles
+  <!-- * Update employee roles -->
 
 Bonus points if you're able to:
 
@@ -86,11 +86,11 @@ How do you deliver this? Here are some guidelines:
 
 * The command-line application should allow users to:
 
-  * Add departments, roles, employees
+  <!-- * Add departments, roles, employees -->
 
-  * View departments, roles, employees
+  <!-- * View departments, roles, employees -->
 
-  * Update employee roles
+  <!-- * Update employee roles -->
 
 ## Bonus
 
