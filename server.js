@@ -61,16 +61,18 @@ function allEmployees() {
             init();
         });
 }
-function allEmployeesDepartment() {
+function allEmployeesDepartment(array) {
+    // let array = distinctDepartment();
+    console.log("array: ", array);
     inquirer.prompt([{
         type: 'list',
         name: 'department',
         message: "View all employees by which department?",
-        choices:
-            [
-                'Management',
-                'Player'
-            ]
+        choices: array
+            // [
+            //     'Management',
+            //     'Player'
+            // ]
     }])
         .then(function (response) {
             connection.query(
@@ -237,7 +239,8 @@ function viewChoice(){
                 allEmployees();
                 break;
             case 'All Employees By Department':
-                allEmployeesDepartment();
+                // allEmployeesDepartment();
+                distinctDepartment()
                 break;
             case 'All Employees By Manager':
                 allEmployeesManager();
@@ -298,4 +301,16 @@ function updateChoice(){
                 console.log("Error: No option selected");
         }
     });
+}
+function distinctDepartment(){
+    let deptArray = [];
+    connection.query(
+        "SELECT DISTINCT role FROM department;",
+        function(err, result){
+            if(err) throw err;
+            result.forEach(element => deptArray.push(element.role));
+            console.log("\nin fx: ", deptArray);
+            allEmployeesDepartment(deptArray)
+        }
+    )
 }
