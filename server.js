@@ -80,7 +80,6 @@ function allEmployeesDepartment(array) {
         }
         );
 }
-//REFORMAT TABLE
 function allEmployeesManager(array) {
     console.log("array: ", array);
     inquirer.prompt([{
@@ -235,11 +234,9 @@ function viewChoice(){
                 allEmployees();
                 break;
             case 'All Employees By Department':
-                // allEmployeesDepartment();
                 distinctDepartment()
                 break;
             case 'All Employees By Manager':
-                // allEmployeesManager();
                 distinctManager();
                 break;
             default:
@@ -311,15 +308,17 @@ function distinctDepartment(){
     )
 }
 function distinctManager(){
-    let deptArray = [];
+    let managerArray = ['null'];
     connection.query(
         "SELECT DISTINCT manager_id FROM employee;",
         function(err, result){
             if(err) throw err;
-            console.log("result: ", result);
-            result.forEach(element => deptArray.push(element.manager_id));
-            console.log("in fx: ",deptArray);
-            allEmployeesManager(deptArray)
+            // result.forEach(element => managerArray.push(element.manager_id));
+            for (let i = 1; i < result.length; i++){
+                managerArray.push(result[i].manager_id);
+            }
+            console.log("in fx: ",managerArray);
+            allEmployeesManager(managerArray)
         }
     )
 }
