@@ -62,17 +62,11 @@ function allEmployees() {
         });
 }
 function allEmployeesDepartment(array) {
-    // let array = distinctDepartment();
-    console.log("array: ", array);
     inquirer.prompt([{
         type: 'list',
         name: 'department',
         message: "View all employees by which department?",
         choices: array
-            // [
-            //     'Management',
-            //     'Player'
-            // ]
     }])
         .then(function (response) {
             connection.query(
@@ -309,7 +303,6 @@ function distinctDepartment(){
         function(err, result){
             if(err) throw err;
             result.forEach(element => deptArray.push(element.role));
-            console.log("\nin fx: ", deptArray);
             allEmployeesDepartment(deptArray)
         }
     )
