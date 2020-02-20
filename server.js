@@ -36,8 +36,8 @@ function init() {
                 'View All Employees By Department',
                 'View All Employees By Manager',
                 'Add Employee',
-                'Remove Employee',
-                'Update Employee Role',
+                'Add Department',
+                'Add Position',
                 'Update Employee Manager'
             ]
     }])
@@ -56,11 +56,11 @@ function init() {
                 case 'Add Employee':
                     addEmployee();
                     break;
-                case 'Remove Employee':
-                    console.log('Remove Employees chosen');
+                case 'Add Department':
+                    addDepartment();
                     break;
-                case 'Update Employee Role':
-                    console.log('Update Employee Role chosen');
+                case 'Add Position':
+                    addPosition();
                     break;
                 case 'Update Employee Manager':
                     console.log('Update Employee Manager chosen');
@@ -124,7 +124,7 @@ function allEmployeesManager() {
         );
 }
 function addEmployee() {
-    const employeeInfo = inquirer.prompt([
+    inquirer.prompt([
         {
             type: 'input',
             name: 'first_name',
@@ -154,9 +154,56 @@ function addEmployee() {
         },
     ])
     .then(function (response) {
-        console.log(response);
         connection.query(
             "INSERT INTO employee SET ?;",
+            [response],
+            function (err, result) {
+                if (err) throw err;
+                init();
+            });
+    }
+    );
+}
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'role',
+            message: "What is the department name?",
+        }
+    ])
+    .then(function (response) {
+        connection.query(
+            "INSERT INTO department SET ?;",
+            [response],
+            function (err, result) {
+                if (err) throw err;
+                init();
+            });
+    }
+    );
+}
+function addPosition() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: "What is the position's name?",
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: "What is the position's salary?",
+        },
+        {
+            type: 'input',
+            name: 'department_id',
+            message: "What is the position's department?",
+        }
+    ])
+    .then(function (response) {
+        connection.query(
+            "INSERT INTO positions SET ?;",
             [response],
             function (err, result) {
                 if (err) throw err;
