@@ -24,7 +24,7 @@ connection.connect(function (err) {
 //Function calls
 init();
 
-//Functions
+//Starts prompts
 function init() {
     inquirer.prompt([{
         type: 'list',
@@ -50,7 +50,7 @@ function init() {
             }
         });
 }
-
+//View related functions
 function allEmployees() {
     connection.query(
         //need to return manager as a column
@@ -103,6 +103,7 @@ function allEmployeesManager() {
         }
         );
 }
+//Add related functions
 function addEmployee() {
     inquirer.prompt([
         {
@@ -192,6 +193,7 @@ function addPosition() {
     }
     );
 }
+//Update related functions
 function updateEmployeePosition() {
     inquirer.prompt([
         {
@@ -216,6 +218,7 @@ function updateEmployeePosition() {
     }
     );
 }
+//These functions group similar functions together
 function viewChoice(){
     inquirer.prompt([{
         type: 'list',
