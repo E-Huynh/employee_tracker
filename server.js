@@ -74,7 +74,7 @@ function init() {
 function allEmployees() {
     connection.query(
         //need to return manager as a column
-        "SELECT employee.id, employee.first_name, employee.last_name, positions.title, department.role, positions.salary, employee.manager_id FROM employee INNER JOIN positions ON employee.position_id = positions.id INNER JOIN department ON positions.department_id = department.id;",
+        "SELECT e.id, e.first_name 'First Name', e.last_name 'Last name', department.role 'Role', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id ORDER BY id;",
         function (err, result) {
             if (err) throw err;
             console.table(result);
