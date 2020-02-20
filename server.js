@@ -54,7 +54,7 @@ function init() {
                     allEmployeesManager()
                     break;
                 case 'Add Employee':
-                    console.log('Add Employee chosen');
+                    addEmployee();
                     break;
                 case 'Remove Employee':
                     console.log('Remove Employees chosen');
@@ -81,7 +81,6 @@ function allEmployees() {
             init();
         });
 }
-
 function allEmployeesDepartment() {
     inquirer.prompt([{
         type: 'list',
@@ -124,4 +123,45 @@ function allEmployeesManager() {
         }
         );
 }
-
+function addEmployee() {
+    const employeeInfo = inquirer.prompt([
+        {
+            type: 'input',
+            name: 'first_name',
+            message: "What is the employee's first name?",
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: "What is the employee's last name?",
+        },
+        {
+            type: 'list',
+            name: 'position_id',
+            message: "What is the employee's position?",
+            choices:
+            [
+                1,
+                2,
+                3,
+                4
+            ]
+        },
+        {
+            type: 'input',
+            name: 'manager_id',
+            message: "Who is the employee's manager?",
+        },
+    ])
+    .then(function (response) {
+        console.log(response);
+        connection.query(
+            "INSERT INTO employee SET ?;",
+            [response],
+            function (err, result) {
+                if (err) throw err;
+                init();
+            });
+    }
+    );
+}
