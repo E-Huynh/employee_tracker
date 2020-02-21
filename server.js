@@ -46,8 +46,10 @@ function init() {
                     return addChoice();
                 case 'Delete':
                     // console.log('Delete fx here');
-                    return deleteEmployee();
-                    break;
+                    // return deleteEmployee();
+                    // return deleteDepartment();
+                    // return deletePosition();
+                    return deleteChoice();
                 case 'Update':
                     return updateChoice();
                 default:
@@ -226,6 +228,46 @@ function deleteEmployee(array) {
     }
     );
 }
+function deleteDepartment() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'role',
+            message: "What is the department name to delete?",
+        }
+    ])
+    .then(function (response) {
+        connection.query(
+            "DELETE FROM department WHERE ?;",
+            [response],
+            function (err, result) {
+                if (err) throw err;
+                console.log(`${response.role} was deleted.`)
+                init();
+            });
+    }
+    );
+}
+function deletePosition() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: "What is the position you want to delete?",
+        }
+    ])
+    .then(function (response) {
+        connection.query(
+            "DELETE FROM positions WHERE ?;",
+            [response],
+            function (err, result) {
+                if (err) throw err;
+                console.log(`${response.title} was deleted`);
+                init();
+            });
+    }
+    );
+}
 //Update related functions
 function updateEmployeePosition() {
     inquirer.prompt([
@@ -309,6 +351,34 @@ function addChoice(){
         }
     });
 }
+function deleteChoice(){
+    inquirer.prompt([{
+        type: 'list',
+        name: 'deleteType',
+        message: 'What would you like to delete?',
+        choices: 
+            [
+                'Employee',
+                'Department',
+                'Position'
+            ]
+    }])
+    .then(function (response) {
+        switch(response.deleteType){
+            case 'Employee':
+                deleteEmployee();
+                break;
+            case 'Department':
+                deleteDepartment();
+                break;
+            case 'Position':
+                deletePosition();
+                break;
+            default:
+                console.log("Error: No option selected");
+        }
+    });
+}
 function updateChoice(){
     inquirer.prompt([{
         type: 'list',
@@ -333,6 +403,7 @@ function updateChoice(){
         }
     });
 }
+//Functions to make some questions dynamically show choices
 function distinctDepartment(){
     let deptArray = [];
     connection.query(
