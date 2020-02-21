@@ -260,6 +260,7 @@ function deleteDepartment(array) {
         }
         );
 }
+//cannot delete positions that are currently assigned due to foreign keys
 function deletePosition(array) {
     inquirer.prompt([
         {
