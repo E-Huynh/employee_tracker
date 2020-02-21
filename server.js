@@ -120,6 +120,7 @@ function addEmployee() {
             name: 'position_id',
             message: "What is the employee's position?",
             choices:
+            //this needs to be dynamic
             [
                 1,
                 2,
@@ -131,6 +132,7 @@ function addEmployee() {
             type: 'input',
             name: 'manager_id',
             message: "Who is the employee's manager?",
+            //this needs to be dynamic and a list
         },
     ])
     .then(function (response) {
