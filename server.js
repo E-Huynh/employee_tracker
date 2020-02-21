@@ -286,19 +286,31 @@ function updateEmployeePosition() {
     inquirer.prompt([
         {
             type: 'input',
-            name: 'id',
-            message: "What is the ID of the employee to update?"
+            name: 'first_name',
+            message: "What is the first name of the employee you want to update?"
         },
         {
             type: 'input',
+            name: 'last_name',
+            message: "What is the first name of the employee you want to update?"
+        },
+        {
+            type: 'list',
             name: 'position_id',
             message: "What is the employee's new position?",
+            choices:
+            [
+                1,
+                2,
+                3,
+                4
+            ]
         }
     ])
         .then(function (response) {
             connection.query(
-                "UPDATE employee SET position_id = ? WHERE id = ?;",
-                [response.position_id, response.id],
+                "UPDATE employee SET position_id = ? WHERE first_name = ? AND last_name = ?;",
+                [response.position_id, response.first_name, response.last_name],
                 function (err, result) {
                     if (err) throw err;
                     init();
