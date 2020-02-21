@@ -40,7 +40,7 @@ Bonus points if you're able to:
 
   * Update employee managers
 
-  * View employees by manager
+  <!-- * View employees by manager -->
 
   * Delete departments, roles, and employees
 

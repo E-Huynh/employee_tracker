@@ -34,6 +34,7 @@ function init() {
             [
                 'View',
                 'Add',
+                'Delete',
                 'Update'
             ]
     }])
@@ -43,6 +44,10 @@ function init() {
                     return viewChoice();
                 case 'Add':
                     return addChoice();
+                case 'Delete':
+                    // console.log('Delete fx here');
+                    return deleteEmployee();
+                    break;
                 case 'Update':
                     return updateChoice();
                 default:
@@ -116,10 +121,10 @@ function addEmployee(array) {
             message: "What is the employee's last name?",
         },
         {
-            type: 'list',
+            type: 'input',
             name: 'position_id',
-            message: "What is the employee's position?",
-            choices: array
+            message: "What is the employee's position ID?",
+            // choices: array
             //this needs to be dynamic
             // [
             //     1,
@@ -136,8 +141,6 @@ function addEmployee(array) {
         },
     ])
     .then(function (response) {
-        response.position_id =
-
         connection.query(
             "INSERT INTO employee SET ?;",
             [response],
@@ -190,6 +193,33 @@ function addPosition() {
             "INSERT INTO positions SET ?;",
             [response],
             function (err, result) {
+                if (err) throw err;
+                init();
+            });
+    }
+    );
+}
+//Delete related functions
+function deleteEmployee(array) {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'first_name',
+            message: "What is the employee's first name?",
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: "What is the employee's last name?",
+        }
+    ])
+    .then(function (response) {
+        console.log(response);
+        connection.query(
+            "DELETE FROM employee WHERE first_name = ? and last_name = ?;",
+            [response.first_name, response.last_name],
+            function (err, result) {
+                console.log(`${response.first_name} ${response.last_name} was deleted.`)
                 if (err) throw err;
                 init();
             });
