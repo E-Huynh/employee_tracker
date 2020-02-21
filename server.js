@@ -244,7 +244,7 @@ function deleteDepartment(array) {
         {
             type: 'list',
             name: 'role',
-            message: "What is the department name to delete?",
+            message: "Which department would you like to delete?",
             choices: array
         }
     ])
