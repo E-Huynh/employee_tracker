@@ -302,15 +302,14 @@ function updateEmployeePosition(array) {
         }
     ])
         .then(function (response) {
-            //had to +1 so that the id could not be index = 0.
-            let index = array.indexOf(response.position_id) + 1;
-            console.log("index: ", index);
             connection.query(
-                "UPDATE employee SET position_id = ? WHERE first_name = ? AND last_name = ?",
-                [index, response.first_name, response.last_name],
+                "SELECT id, title From positions;",
                 function (err, result) {
                     if (err) throw err;
-                    init();
+                    let choiceId;
+                    let choice = result.filter(word => word.title === response.position_id);
+                    choiceId = choice[0].id;
+                    employeePositionCallback(choiceId, response.first_name, response.last_name);
                 });
         }
         );
@@ -460,4 +459,13 @@ function distinctPosition(cb) {
             cb(array)
         }
     )
+}
+function employeePositionCallback(id, first_name, last_name) {
+    connection.query(
+        "UPDATE employee SET position_id = ? WHERE first_name = ? AND last_name = ?;",
+        [id, first_name, last_name],
+        function (err, result) {
+            if (err) throw err;
+            init();
+        });
 }
