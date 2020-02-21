@@ -103,7 +103,7 @@ function allEmployeesManager(array) {
         );
 }
 //Add related functions
-function addEmployee() {
+function addEmployee(array) {
     inquirer.prompt([
         {
             type: 'input',
@@ -119,14 +119,14 @@ function addEmployee() {
             type: 'list',
             name: 'position_id',
             message: "What is the employee's position?",
-            choices:
+            choices: array
             //this needs to be dynamic
-            [
-                1,
-                2,
-                3,
-                4
-            ]
+            // [
+            //     1,
+            //     2,
+            //     3,
+            //     4
+            // ]
         },
         {
             type: 'input',
@@ -136,6 +136,8 @@ function addEmployee() {
         },
     ])
     .then(function (response) {
+        response.position_id =
+
         connection.query(
             "INSERT INTO employee SET ?;",
             [response],
@@ -263,7 +265,8 @@ function addChoice(){
     .then(function (response) {
         switch(response.addType){
             case 'Employee':
-                addEmployee();
+                // addEmployee();
+                distinctPosition();
                 break;
             case 'Department':
                 addDepartment()
@@ -324,6 +327,17 @@ function distinctManager(){
             }
             console.log("in fx: ", managerArray);
             allEmployeesManager(managerArray)
+        }
+    )
+}
+function distinctPosition(){
+    let array = [];
+    connection.query(
+        "SELECT DISTINCT role FROM department;",
+        function(err, result){
+            if(err) throw err;
+            result.forEach(element => array.push(element.role));
+            addEmployee(array)
         }
     )
 }
