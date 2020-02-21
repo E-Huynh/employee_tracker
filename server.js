@@ -56,7 +56,6 @@ function init() {
 //View related functions
 function allEmployees(runInit, cb) {
     connection.query(
-        //need to return manager as a column
         "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id ORDER BY id;",
         function (err, result) {
             if (err) throw err;
@@ -73,7 +72,7 @@ function allEmployeesDepartment(array) {
     inquirer.prompt([{
         type: 'list',
         name: 'department',
-        message: "View all employees by which department?",
+        message: "View all employees in which department?",
         choices: array
     }])
         .then(function (response) {
@@ -90,7 +89,6 @@ function allEmployeesDepartment(array) {
 }
 //DECIDE IF WE WANT TO SHOW SOMETHING WHEN 'NULL' IS CHOSEN.
 function allEmployeesManager(array) {
-    // console.log("array: ", array);
     inquirer.prompt([{
         type: 'list',
         name: 'manager',
@@ -420,13 +418,10 @@ function distinctManager(){
     connection.query(
         "SELECT distinct e.manager_id, CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id;",
         function(err, result){
-            console.log("result: ", result);
             if(err) throw err;
-            // result.forEach(element => managerArray.push(element.manager_id));
             for (let i = 1; i < result.length; i++){
                 managerArray.push(result[i].Manager);
             }
-            // console.log("in fx: ", managerArray);
             allEmployeesManager(managerArray)
         }
     )
