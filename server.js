@@ -45,10 +45,6 @@ function init() {
                 case 'Add':
                     return addChoice();
                 case 'Delete':
-                    // console.log('Delete fx here');
-                    // return deleteEmployee();
-                    // return deleteDepartment();
-                    // return deletePosition();
                     return deleteChoice();
                 case 'Update':
                     return updateChoice();
@@ -58,14 +54,19 @@ function init() {
         });
 }
 //View related functions
-function allEmployees() {
+function allEmployees(runInit, cb) {
     connection.query(
         //need to return manager as a column
         "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id ORDER BY id;",
         function (err, result) {
             if (err) throw err;
             console.table(result);
-            init();
+            if(runInit === false){
+                console.log("\n");
+                return cb();
+            }else{
+                init();
+            }
         });
 }
 function allEmployeesDepartment(array) {
@@ -89,7 +90,7 @@ function allEmployeesDepartment(array) {
 }
 //DECIDE IF WE WANT TO SHOW SOMETHING WHEN 'NULL' IS CHOSEN.
 function allEmployeesManager(array) {
-    console.log("array: ", array);
+    // console.log("array: ", array);
     inquirer.prompt([{
         type: 'list',
         name: 'manager',
@@ -216,7 +217,7 @@ function deleteEmployee(array) {
         }
     ])
     .then(function (response) {
-        console.log(response);
+        // console.log(response);
         connection.query(
             "DELETE FROM employee WHERE first_name = ? and last_name = ?;",
             [response.first_name, response.last_name],
@@ -309,7 +310,7 @@ function viewChoice(){
     .then(function (response) {
         switch(response.viewType){
             case 'All Employees':
-                allEmployees();
+                allEmployees(true);
                 break;
             case 'All Employees By Department':
                 distinctDepartment()
@@ -337,8 +338,7 @@ function addChoice(){
     .then(function (response) {
         switch(response.addType){
             case 'Employee':
-                // addEmployee();
-                distinctPosition();
+                addEmployee();
                 break;
             case 'Department':
                 addDepartment()
@@ -366,7 +366,7 @@ function deleteChoice(){
     .then(function (response) {
         switch(response.deleteType){
             case 'Employee':
-                deleteEmployee();
+                allEmployees(false, deleteEmployee);
                 break;
             case 'Department':
                 deleteDepartment();
@@ -426,11 +426,12 @@ function distinctManager(){
             for (let i = 1; i < result.length; i++){
                 managerArray.push(result[i].Manager);
             }
-            console.log("in fx: ", managerArray);
+            // console.log("in fx: ", managerArray);
             allEmployeesManager(managerArray)
         }
     )
 }
+//Not in use. Designed to dynamically display roles in inquirer list
 function distinctPosition(){
     let array = [];
     connection.query(
