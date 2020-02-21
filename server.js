@@ -87,7 +87,6 @@ function allEmployeesDepartment(array) {
         }
         );
 }
-//DECIDE IF WE WANT TO SHOW SOMETHING WHEN 'NULL' IS CHOSEN.
 function allEmployeesManager(array) {
     inquirer.prompt([{
         type: 'list',
