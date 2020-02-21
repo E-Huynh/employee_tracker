@@ -246,11 +246,6 @@ function deleteDepartment(array) {
             name: 'role',
             message: "What is the department name to delete?",
             choices: array
-            // [
-            //     'Management',
-            //     'Player',
-            //     'Testing'
-            // ]
         }
     ])
         .then(function (response) {
@@ -386,7 +381,6 @@ function deleteChoice() {
                     break;
                 case 'Department':
                     distinctDepartment(deleteDepartment);
-                    // deleteDepartment();
                     break;
                 case 'Position':
                     deletePosition();
