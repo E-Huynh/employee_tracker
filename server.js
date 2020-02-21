@@ -282,7 +282,7 @@ function deletePosition(array) {
         );
 }
 //Update related functions
-function updateEmployeePosition() {
+function updateEmployeePosition(array) {
     inquirer.prompt([
         {
             type: 'input',
@@ -298,19 +298,16 @@ function updateEmployeePosition() {
             type: 'list',
             name: 'position_id',
             message: "What is the employee's new position?",
-            choices:
-            [
-                1,
-                2,
-                3,
-                4
-            ]
+            choices: array
         }
     ])
         .then(function (response) {
+            //had to +1 so that the id could not be index = 0.
+            let index = array.indexOf(response.position_id) + 1;
+            console.log("index: ", index);
             connection.query(
-                "UPDATE employee SET position_id = ? WHERE first_name = ? AND last_name = ?;",
-                [response.position_id, response.first_name, response.last_name],
+                "UPDATE employee SET position_id = ? WHERE first_name = ? AND last_name = ?",
+                [index, response.first_name, response.last_name],
                 function (err, result) {
                     if (err) throw err;
                     init();
@@ -418,7 +415,7 @@ function updateChoice() {
         .then(function (response) {
             switch (response.updateType) {
                 case 'Employee Position':
-                    updateEmployeePosition();
+                    distinctPosition(updateEmployeePosition);
                     break;
                 case 'Employee Manager':
                     console.log('Fx does not exist');
