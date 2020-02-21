@@ -60,10 +60,10 @@ function allEmployees(runInit, cb) {
         function (err, result) {
             if (err) throw err;
             console.table(result);
-            if(runInit === false){
+            if (runInit === false) {
                 console.log("\n");
                 return cb();
-            }else{
+            } else {
                 init();
             }
         });
@@ -97,14 +97,26 @@ function allEmployeesManager(array) {
     }])
         .then(function (response) {
             let index = array.indexOf(response.manager);
-            connection.query(
-                "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id = ? ORDER BY id;",
-                [index],
-                function (err, result) {
-                    if (err) throw err;
-                    console.table(result);
-                    init();
-                });
+            if (index === 0) {
+                connection.query(
+                    "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id IS NULL ORDER BY id;",
+                    function (err, result) {
+                        if (err) throw err;
+                        console.table(result);
+                        init();
+                    });
+            }
+            else {
+                connection.query(
+                    "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id = ? ORDER BY id;",
+                    [index],
+                    function (err, result) {
+                        if (err) throw err;
+                        console.table(result);
+                        init();
+                    });
+            }
+
         }
         );
 }
@@ -141,16 +153,16 @@ function addEmployee(array) {
             //this needs to be dynamic and a list
         },
     ])
-    .then(function (response) {
-        connection.query(
-            "INSERT INTO employee SET ?;",
-            [response],
-            function (err, result) {
-                if (err) throw err;
-                init();
-            });
-    }
-    );
+        .then(function (response) {
+            connection.query(
+                "INSERT INTO employee SET ?;",
+                [response],
+                function (err, result) {
+                    if (err) throw err;
+                    init();
+                });
+        }
+        );
 }
 function addDepartment() {
     inquirer.prompt([
@@ -160,16 +172,16 @@ function addDepartment() {
             message: "What is the department name?",
         }
     ])
-    .then(function (response) {
-        connection.query(
-            "INSERT INTO department SET ?;",
-            [response],
-            function (err, result) {
-                if (err) throw err;
-                init();
-            });
-    }
-    );
+        .then(function (response) {
+            connection.query(
+                "INSERT INTO department SET ?;",
+                [response],
+                function (err, result) {
+                    if (err) throw err;
+                    init();
+                });
+        }
+        );
 }
 function addPosition() {
     inquirer.prompt([
@@ -189,16 +201,16 @@ function addPosition() {
             message: "What is the position's department?",
         }
     ])
-    .then(function (response) {
-        connection.query(
-            "INSERT INTO positions SET ?;",
-            [response],
-            function (err, result) {
-                if (err) throw err;
-                init();
-            });
-    }
-    );
+        .then(function (response) {
+            connection.query(
+                "INSERT INTO positions SET ?;",
+                [response],
+                function (err, result) {
+                    if (err) throw err;
+                    init();
+                });
+        }
+        );
 }
 //Delete related functions
 function deleteEmployee(array) {
@@ -214,18 +226,18 @@ function deleteEmployee(array) {
             message: "What is the employee's last name?",
         }
     ])
-    .then(function (response) {
-        // console.log(response);
-        connection.query(
-            "DELETE FROM employee WHERE first_name = ? and last_name = ?;",
-            [response.first_name, response.last_name],
-            function (err, result) {
-                console.log(`${response.first_name} ${response.last_name} was deleted.`)
-                if (err) throw err;
-                init();
-            });
-    }
-    );
+        .then(function (response) {
+            // console.log(response);
+            connection.query(
+                "DELETE FROM employee WHERE first_name = ? and last_name = ?;",
+                [response.first_name, response.last_name],
+                function (err, result) {
+                    console.log(`${response.first_name} ${response.last_name} was deleted.`)
+                    if (err) throw err;
+                    init();
+                });
+        }
+        );
 }
 function deleteDepartment() {
     inquirer.prompt([
@@ -235,17 +247,17 @@ function deleteDepartment() {
             message: "What is the department name to delete?",
         }
     ])
-    .then(function (response) {
-        connection.query(
-            "DELETE FROM department WHERE ?;",
-            [response],
-            function (err, result) {
-                if (err) throw err;
-                console.log(`${response.role} was deleted.`)
-                init();
-            });
-    }
-    );
+        .then(function (response) {
+            connection.query(
+                "DELETE FROM department WHERE ?;",
+                [response],
+                function (err, result) {
+                    if (err) throw err;
+                    console.log(`${response.role} was deleted.`)
+                    init();
+                });
+        }
+        );
 }
 function deletePosition() {
     inquirer.prompt([
@@ -255,17 +267,17 @@ function deletePosition() {
             message: "What is the position you want to delete?",
         }
     ])
-    .then(function (response) {
-        connection.query(
-            "DELETE FROM positions WHERE ?;",
-            [response],
-            function (err, result) {
-                if (err) throw err;
-                console.log(`${response.title} was deleted`);
-                init();
-            });
-    }
-    );
+        .then(function (response) {
+            connection.query(
+                "DELETE FROM positions WHERE ?;",
+                [response],
+                function (err, result) {
+                    if (err) throw err;
+                    console.log(`${response.title} was deleted`);
+                    init();
+                });
+        }
+        );
 }
 //Update related functions
 function updateEmployeePosition() {
@@ -281,145 +293,145 @@ function updateEmployeePosition() {
             message: "What is the employee's new position?",
         }
     ])
-    .then(function (response) {
-        connection.query(
-            "UPDATE employee SET position_id = ? WHERE id = ?;",
-            [response.position_id, response.id],
-            function (err, result) {
-                if (err) throw err;
-                init();
-            });
-    }
-    );
+        .then(function (response) {
+            connection.query(
+                "UPDATE employee SET position_id = ? WHERE id = ?;",
+                [response.position_id, response.id],
+                function (err, result) {
+                    if (err) throw err;
+                    init();
+                });
+        }
+        );
 }
 //These functions group similar functions together
-function viewChoice(){
+function viewChoice() {
     inquirer.prompt([{
         type: 'list',
         name: 'viewType',
         message: 'What would you like to view?',
-        choices: 
+        choices:
             [
                 'All Employees',
                 'All Employees By Department',
                 'All Employees By Manager'
             ]
     }])
-    .then(function (response) {
-        switch(response.viewType){
-            case 'All Employees':
-                allEmployees(true);
-                break;
-            case 'All Employees By Department':
-                distinctDepartment()
-                break;
-            case 'All Employees By Manager':
-                distinctManager();
-                break;
-            default:
-                console.log("Error: No option selected");
-        }
-    });
+        .then(function (response) {
+            switch (response.viewType) {
+                case 'All Employees':
+                    allEmployees(true);
+                    break;
+                case 'All Employees By Department':
+                    distinctDepartment()
+                    break;
+                case 'All Employees By Manager':
+                    distinctManager();
+                    break;
+                default:
+                    console.log("Error: No option selected");
+            }
+        });
 }
-function addChoice(){
+function addChoice() {
     inquirer.prompt([{
         type: 'list',
         name: 'addType',
         message: 'What would you like to add?',
-        choices: 
+        choices:
             [
                 'Employee',
                 'Department',
                 'Position'
             ]
     }])
-    .then(function (response) {
-        switch(response.addType){
-            case 'Employee':
-                addEmployee();
-                break;
-            case 'Department':
-                addDepartment()
-                break;
-            case 'Position':
-                addPosition();
-                break;
-            default:
-                console.log("Error: No option selected");
-        }
-    });
+        .then(function (response) {
+            switch (response.addType) {
+                case 'Employee':
+                    addEmployee();
+                    break;
+                case 'Department':
+                    addDepartment()
+                    break;
+                case 'Position':
+                    addPosition();
+                    break;
+                default:
+                    console.log("Error: No option selected");
+            }
+        });
 }
-function deleteChoice(){
+function deleteChoice() {
     inquirer.prompt([{
         type: 'list',
         name: 'deleteType',
         message: 'What would you like to delete?',
-        choices: 
+        choices:
             [
                 'Employee',
                 'Department',
                 'Position'
             ]
     }])
-    .then(function (response) {
-        switch(response.deleteType){
-            case 'Employee':
-                allEmployees(false, deleteEmployee);
-                break;
-            case 'Department':
-                deleteDepartment();
-                break;
-            case 'Position':
-                deletePosition();
-                break;
-            default:
-                console.log("Error: No option selected");
-        }
-    });
+        .then(function (response) {
+            switch (response.deleteType) {
+                case 'Employee':
+                    allEmployees(false, deleteEmployee);
+                    break;
+                case 'Department':
+                    deleteDepartment();
+                    break;
+                case 'Position':
+                    deletePosition();
+                    break;
+                default:
+                    console.log("Error: No option selected");
+            }
+        });
 }
-function updateChoice(){
+function updateChoice() {
     inquirer.prompt([{
         type: 'list',
         name: 'updateType',
         message: 'What would you like to update?',
-        choices: 
+        choices:
             [
                 'Employee Position',
                 'Employee Manager'
             ]
     }])
-    .then(function (response) {
-        switch(response.updateType){
-            case 'Employee Position':
-                updateEmployeePosition();
-                break;
-            case 'Employee Manager':
-                console.log('Fx does not exist');
-                break;
-            default:
-                console.log("Error: No option selected");
-        }
-    });
+        .then(function (response) {
+            switch (response.updateType) {
+                case 'Employee Position':
+                    updateEmployeePosition();
+                    break;
+                case 'Employee Manager':
+                    console.log('Fx does not exist');
+                    break;
+                default:
+                    console.log("Error: No option selected");
+            }
+        });
 }
 //Functions to make some questions dynamically show choices
-function distinctDepartment(){
+function distinctDepartment() {
     let deptArray = [];
     connection.query(
         "SELECT DISTINCT role FROM department;",
-        function(err, result){
-            if(err) throw err;
+        function (err, result) {
+            if (err) throw err;
             result.forEach(element => deptArray.push(element.role));
             allEmployeesDepartment(deptArray)
         }
     )
 }
-function distinctManager(){
-    let managerArray = ['null'];
+function distinctManager() {
+    let managerArray = ['No Manager'];
     connection.query(
         "SELECT distinct e.manager_id, CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id;",
-        function(err, result){
-            if(err) throw err;
-            for (let i = 1; i < result.length; i++){
+        function (err, result) {
+            if (err) throw err;
+            for (let i = 1; i < result.length; i++) {
                 managerArray.push(result[i].Manager);
             }
             allEmployeesManager(managerArray)
@@ -427,12 +439,12 @@ function distinctManager(){
     )
 }
 //Not in use. Designed to dynamically display roles in inquirer list
-function distinctPosition(){
+function distinctPosition() {
     let array = [];
     connection.query(
         "SELECT DISTINCT role FROM department;",
-        function(err, result){
-            if(err) throw err;
+        function (err, result) {
+            if (err) throw err;
             result.forEach(element => array.push(element.role));
             addEmployee(array)
         }
