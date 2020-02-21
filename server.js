@@ -260,12 +260,13 @@ function deleteDepartment(array) {
         }
         );
 }
-function deletePosition() {
+function deletePosition(array) {
     inquirer.prompt([
         {
-            type: 'input',
+            type: 'list',
             name: 'title',
             message: "What is the position you want to delete?",
+            choices: array
         }
     ])
         .then(function (response) {
@@ -383,7 +384,8 @@ function deleteChoice() {
                     distinctDepartment(deleteDepartment);
                     break;
                 case 'Position':
-                    deletePosition();
+                    distinctPosition(deletePosition)
+                    // deletePosition();
                     break;
                 default:
                     console.log("Error: No option selected");
@@ -440,14 +442,14 @@ function distinctManager() {
     )
 }
 //Not in use. Designed to dynamically display roles in inquirer list
-function distinctPosition() {
+function distinctPosition(cb) {
     let array = [];
     connection.query(
-        "SELECT DISTINCT role FROM department;",
+        "SELECT DISTINCT title FROM positions;",
         function (err, result) {
             if (err) throw err;
-            result.forEach(element => array.push(element.role));
-            addEmployee(array)
+            result.forEach(element => array.push(element.title));
+            cb(array)
         }
     )
 }
