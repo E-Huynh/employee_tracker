@@ -120,6 +120,7 @@ function allEmployeesManager(array) {
         );
 }
 //Add related functions
+//Still needs dynamic choices
 function addEmployee(array) {
     inquirer.prompt([
         {
