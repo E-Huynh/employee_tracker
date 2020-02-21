@@ -239,12 +239,18 @@ function deleteEmployee(array) {
         }
         );
 }
-function deleteDepartment() {
+function deleteDepartment(array) {
     inquirer.prompt([
         {
-            type: 'input',
+            type: 'list',
             name: 'role',
             message: "What is the department name to delete?",
+            choices: array
+            // [
+            //     'Management',
+            //     'Player',
+            //     'Testing'
+            // ]
         }
     ])
         .then(function (response) {
@@ -323,7 +329,7 @@ function viewChoice() {
                     allEmployees(true);
                     break;
                 case 'All Employees By Department':
-                    distinctDepartment()
+                    distinctDepartment(allEmployeesDepartment);
                     break;
                 case 'All Employees By Manager':
                     distinctManager();
@@ -379,7 +385,8 @@ function deleteChoice() {
                     allEmployees(false, deleteEmployee);
                     break;
                 case 'Department':
-                    deleteDepartment();
+                    distinctDepartment(deleteDepartment);
+                    // deleteDepartment();
                     break;
                 case 'Position':
                     deletePosition();
@@ -414,14 +421,14 @@ function updateChoice() {
         });
 }
 //Functions to make some questions dynamically show choices
-function distinctDepartment() {
+function distinctDepartment(cb) {
     let deptArray = [];
     connection.query(
         "SELECT DISTINCT role FROM department;",
         function (err, result) {
             if (err) throw err;
             result.forEach(element => deptArray.push(element.role));
-            allEmployeesDepartment(deptArray)
+            cb(deptArray)
         }
     )
 }
