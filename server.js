@@ -441,7 +441,6 @@ function distinctManager() {
         }
     )
 }
-//Not in use. Designed to dynamically display roles in inquirer list
 function distinctPosition(cb) {
     let array = [];
     connection.query(
