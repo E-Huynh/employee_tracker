@@ -91,31 +91,31 @@ function allEmployeesManager(array) {
     inquirer.prompt([{
         type: 'list',
         name: 'manager',
-        message: "View all employees by which manager's ID?",
+        message: "View all employees by which manager?",
         choices: array
     }])
         .then(function (response) {
             let index = array.indexOf(response.manager);
-            if (index === 0) {
-                connection.query(
-                    "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id IS NULL ORDER BY id;",
-                    function (err, result) {
-                        if (err) throw err;
-                        console.table(result);
-                        init();
-                    });
+            switch (index) {
+                case 0:
+                    connection.query(
+                        "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id IS NULL ORDER BY id;",
+                        function (err, result) {
+                            if (err) throw err;
+                            console.table(result);
+                            init();
+                        });
+                    break;
+                default:
+                    connection.query(
+                        "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id = ? ORDER BY id;",
+                        [index],
+                        function (err, result) {
+                            if (err) throw err;
+                            console.table(result);
+                            init();
+                        });
             }
-            else {
-                connection.query(
-                    "SELECT e.id 'ID', e.first_name 'First Name', e.last_name 'Last name', department.role 'Department', positions.title 'Position', positions.salary 'Salary', CONCAT(f.first_name, ' ', f.last_name) AS 'Manager' FROM employee AS e left join employee AS f on e.manager_id = f.id INNER JOIN positions ON e.position_id = positions.id INNER JOIN department ON positions.department_id = department.id WHERE e.manager_id = ? ORDER BY id;",
-                    [index],
-                    function (err, result) {
-                        if (err) throw err;
-                        console.table(result);
-                        init();
-                    });
-            }
-
         }
         );
 }
