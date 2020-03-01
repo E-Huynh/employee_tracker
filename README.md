@@ -31,12 +31,27 @@ Simple run node server.js in the node terminal to run. Follow the CLI instructio
 ## Challenges & Accomplishments
 The most challenging and rewarding part of this excercise was dealing with the asynchronous SQL queries. Learning to handle callbacks was a really fun challenge. I would really like to go back and reformat the functions into an ORM format to reduce "WET" code.
 ## Images
+The menu allows a user to select between: View, Add, Delete, and Update.
 ![Menu](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Menu.png?raw=true)
+
+Each menu choice has a submenu similar to the image below to allow a user to choose a more specific action.
 ![Submenu](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Submenu.png?raw=true)
+
+Users can view the following: All Employees, All Employees by Department, and All Employees by Managers
 ![View Employees](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/View%20Employees.png?raw=true)
+
+Below is an example of viewing employees by department. The data is showing employees in the Management department. The second table shows employees in the Player department.
 ![View by Department](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/View%20by%20Department.png?raw=true)
+
+The add function allows users to add employees, departments, and positions.
 ![Add Submenu](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Add%20submenu.png?raw=true)
+
+This is an example of the add employee function. The employee Github Example was added in this case.
 ![Add Employee](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Adding%20employee.png?raw=true)
+
+This is an example of deleting an emplyee by typing in their first name and last name. Github Example was deleted in this case.
 ![Delete Employee](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Delete%20Employee.png?raw=true)
+
+Employee's manager and position can be updated as well. In this example, the employee David Ayres was updated from Emergency Goalie to Coach.
 ![Update Employee](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Updating%20employee%20position.png?raw=true)
 
