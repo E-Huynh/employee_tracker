@@ -31,5 +31,12 @@ Simple run node server.js in the node terminal to run. Follow the CLI instructio
 ## Challenges & Accomplishments
 The most challenging and rewarding part of this excercise was dealing with the asynchronous SQL queries. Learning to handle callbacks was a really fun challenge. I would really like to go back and reformat the functions into an ORM format to reduce "WET" code.
 ## Images
-
+![Menu](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Menu.png?raw=true)
+![Submenu](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Submenu.png?raw=true)
+![View Employees](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/View%20Employees.png?raw=true)
+![View by Department](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/View%20by%20Department.png?raw=true)
+![Add Submenu](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Add%20submenu.png?raw=true)
+![Add Employee](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Adding%20employee.png?raw=true)
+![Delete Employee](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Delete%20Employee.png?raw=true)
+![Update Employee](https://github.com/E-Huynh/employee_tracker/blob/master/Assets/Updating%20employee%20position.png?raw=true)
 
