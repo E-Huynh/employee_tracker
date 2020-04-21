@@ -8,7 +8,7 @@ Erik.W.Huynh@Gmail.com
 
 [LinkedIn](https://www.linkedin.com/in/erik-huynh-228321196/)
 
-[Portfolio](https://e-huynh.github.io/updated_portfolio/)
+[Portfolio](https://e-huynh.github.io/portfolio-gram/)
 
 ## Project Description
 Employee tracker is a command line interface application that allows users to track employees in a SQL database. Users are able to enter in different departments, positions, salaries, managers and more using the interface. 
